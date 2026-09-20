@@ -10,7 +10,7 @@ ENV NODE_ENV=production \
     # Render's free tier has 512 MB: keep Node's heap small and leave the rest to Chromium.
     NODE_OPTIONS=--max-old-space-size=192 \
     # The store's session check passes a real (headed) browser more often than a headless one.
-    # Xvfb (below) gives Chromium a virtual display so it can run headed inside the container.
+    # docker-entrypoint.sh starts Xvfb (a virtual display) so Chromium can run headed in the container.
     SCRAPE_HEADED=1 \
     SCRAPE_CONCURRENCY=1
 
@@ -20,7 +20,8 @@ RUN npm ci --include=dev --ignore-scripts
 COPY backend/tsconfig.json ./
 COPY backend/src ./src
 COPY backend/sql ./sql
-RUN npm run build && npm prune --omit=dev --ignore-scripts
+COPY backend/docker-entrypoint.sh ./docker-entrypoint.sh
+RUN npm run build && npm prune --omit=dev --ignore-scripts && chmod +x /app/docker-entrypoint.sh
 
 EXPOSE 8080
-CMD ["xvfb-run", "-a", "--server-args=-screen 0 1920x1080x24", "node", "dist/server.js"]
+CMD ["/app/docker-entrypoint.sh"]
