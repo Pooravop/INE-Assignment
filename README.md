@@ -4,8 +4,8 @@ Pick a product from INE's mock store, and the app scrapes its **price and stock 
 
 | | |
 |---|---|
-| **Live site** | _add your Vercel URL here_ |
-| **API** | _add your Render URL here_ (`/health`) |
+| **Live site** | Vercel URL here_ |
+| **API** | Render URL here_ |
 | **Design note** | [DESIGN_NOTE.md](DESIGN_NOTE.md) |
 
 ## What it does
