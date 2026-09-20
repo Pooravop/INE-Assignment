@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.pglite
+*.log
+.DS_Store
+
+# Not part of the submission: leftovers from an earlier project, and the assignment brief itself
+packages/
+Software_Engineer_Intern_Assignment.pdf
+context.txt
+prompt.txt

@@ -1,0 +1,43 @@
+{
+  "name": "price-tracker-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Product Price Tracker - Express API + Playwright scraper",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "scrape": "tsx src/cli.ts",
+    "scrape:headed": "tsx src/cli.ts --headed",
+    "migrate": "tsx src/migrate.ts",
+    "postinstall": "node scripts/install-browser.mjs",
+    "demo": "tsx src/cli.ts --headed --product 1 --chaos",
+    "diag:sample": "tsx scripts/diagnostics/batch.ts",
+    "diag:dump": "tsx scripts/diagnostics/dump.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.1",
+    "express": "^5.2.1",
+    "pg": "^8.23.0",
+    "playwright": "1.63.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.2",
+    "@types/pg": "^8.23.1",
+    "@types/supertest": "^7.2.1",
+    "supertest": "^7.2.2",
+    "tsx": "^4.23.14",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
+}

@@ -1,0 +1,23 @@
+# Render Blueprint: New + -> Blueprint -> pick this repo. Then fill in the three "sync: false" values.
+services:
+  - type: web
+    name: price-tracker-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL # Supabase "Session pooler" connection string
+        sync: false
+      - key: CORS_ORIGIN # your Vercel URL, e.g. https://price-tracker.vercel.app
+        sync: false
+      - key: CRON_SECRET # any long random string; cron-job.org sends it as a Bearer token
+        generateValue: true
+      - key: SCRAPE_HEADED
+        value: "1"
+      - key: SCRAPE_MAX_ATTEMPTS
+        value: "6"
+      - key: SCRAPE_CONCURRENCY
+        value: "1"

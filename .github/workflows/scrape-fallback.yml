@@ -1,0 +1,27 @@
+# OPTIONAL fallback scraper. The primary path is: cron-job.org -> Render /api/cron/scrape.
+# Enable this if Render's 512 MB free tier cannot hold a headed Chromium. It runs the same
+# CLI against the same Supabase database. The database lock + "due" window make it safe to
+# have both enabled: whichever runs second finds nothing due.
+#
+# Needs a repository secret: DATABASE_URL (Supabase Session pooler string).
+name: Scrape (fallback)
+on:
+  schedule:
+    - cron: "0 */2 * * *" # every 2 hours (GitHub may delay scheduled runs by several minutes)
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults: { run: { working-directory: backend } }
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SCRAPE_HEADED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: backend/package-lock.json }
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - run: xvfb-run -a npm run scrape -- --all
